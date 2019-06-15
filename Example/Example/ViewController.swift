@@ -28,8 +28,7 @@ class ViewController: UIViewController {
         fableView.swipe(.left)
     }
     @IBAction func sr(_ sender: Any) {
-//        missView.swipe(.right)
-//        ["FFF", "LLL", "1111", "2222"]
+        fableView.swipe(.right)
     }
     
     private func setup()  {

@@ -26,18 +26,16 @@
                                     <constraint firstAttribute="height" constant="500" id="p5e-Lo-LEL"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SF8-9j-bd7">
-                                <rect key="frame" x="104" y="766" width="45" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="button"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SF8-9j-bd7">
+                                <rect key="frame" x="91.5" y="748" width="31" height="30"/>
+                                <state key="normal" title="左滑"/>
                                 <connections>
                                     <action selector="sw:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wJg-Fw-iPB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i4E-se-hK1">
-                                <rect key="frame" x="273" y="766" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="r"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i4E-se-hK1">
+                                <rect key="frame" x="291.5" y="748" width="31" height="30"/>
+                                <state key="normal" title="右滑"/>
                                 <connections>
                                     <action selector="sr:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GY5-Qp-y6C"/>
                                 </connections>
@@ -46,7 +44,11 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="P08-Pe-CER" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4Vz-ji-mgG"/>
+                            <constraint firstItem="SF8-9j-bd7" firstAttribute="top" secondItem="P08-Pe-CER" secondAttribute="bottom" constant="50" id="Cbk-nt-Aou"/>
                             <constraint firstItem="P08-Pe-CER" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="PNi-aY-PYe"/>
+                            <constraint firstItem="i4E-se-hK1" firstAttribute="top" secondItem="SF8-9j-bd7" secondAttribute="top" id="VjE-Z1-v5m"/>
+                            <constraint firstItem="SF8-9j-bd7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="-100" id="cTy-Kl-Va7"/>
+                            <constraint firstItem="i4E-se-hK1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="100" id="myj-rZ-tuM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
