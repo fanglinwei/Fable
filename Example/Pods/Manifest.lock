@@ -1,0 +1,16 @@
+PODS:
+  - Fable (0.0.1)
+
+DEPENDENCIES:
+  - Fable (from `../`)
+
+EXTERNAL SOURCES:
+  Fable:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Fable: c9dbd2f424b67b23ac77b6caa744f026c2817bff
+
+PODFILE CHECKSUM: 4bc7a5ba9919cfc2c9b5718beab3b682d2084243
+
+COCOAPODS: 1.7.1
