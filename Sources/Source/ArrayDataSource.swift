@@ -58,7 +58,6 @@ public class ArrayDataSource<Data> {
         return data
     }
     
-    @discardableResult
     func popVisible() {
         if let temp = visibles.safeRemoveFirst()  {
             recycles.append(temp)

@@ -51,7 +51,7 @@ class ViewController: UIViewController {
         }
         
         action.didRunOutOfVisibles.delegate(on: self) { (self, context) in
-            print("didRunOutOfVisibles\(context.data)")
+            print("didRunOutOfVisibles")
         }
         
         action.didShowCard.delegate(on: self) { (self, context) in

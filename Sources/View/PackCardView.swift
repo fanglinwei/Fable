@@ -343,7 +343,7 @@ extension PackCardView {
     var completionAngle: CGFloat {
         let a = bounds.width * 0.5 / (dot.y - bounds.height)
         let rotationAngle =  atan(a)
-        return a
+        return rotationAngle
     }
 }
 
