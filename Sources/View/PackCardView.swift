@@ -26,7 +26,7 @@ protocol PackCardViewDelegate: class {
 }
 
 public final class PackCardView: UIView {
-
+    
     /// 滑动半径
     public var radius: CGFloat?
     public var targetAngle: CGFloat = 0.69
@@ -54,7 +54,7 @@ public final class PackCardView: UIView {
     
     /// 滑动圆心
     private var dot: CGPoint {
-        let r = radius ?? bounds.height * 2.5
+        let r = (radius ?? bounds.height * 2) + bounds.height * 0.5
         return CGPoint(x: bounds.width * 0.5, y: abs(r))
     }
     
@@ -156,6 +156,7 @@ extension PackCardView {
     }
     
     @objc func panGestureRecognized(_ gestureRecognizer: UIPanGestureRecognizer) {
+        
         switch gestureRecognizer.state {
         case .began:
             removeAnimations()
@@ -179,10 +180,12 @@ extension PackCardView {
              atan 反正切函数
              旋转角度 = 反正切/(位移的距离/圆点到手势触摸的点)
              */
-            let dragDistance = gestureRecognizer.translation(in: self.superview)
-            let a = dragDistance.x / (dot.y - bounds.height * 0.5)
+            let dragDistance = gestureRecognizer.translation(in: superview)
+            let location = gestureRecognizer.location(in: superview)
+            
+            let a = dragDistance.x / (dot.y - location.y)
             let rotationAngle =  atan(a)
-            var fraction = (rotationAngle / targetAngle) * 0.58
+            var fraction = rotationAngle / (targetAngle * 2)
             if animator.isReversed { fraction *= -1 }
             animator.fractionComplete = fraction + animationProgress
             let percentage = dragPercentage
@@ -190,7 +193,8 @@ extension PackCardView {
             if let dragDirection = dragDirection {
                 delegate?.card(self, wasDraggedWithFinishPercentage: min(abs(100 * percentage), 100), inDirection: dragDirection)
             }
-        case .ended:
+        case .ended, .cancelled:
+            isUserInteractionEnabled = false
             delegate?.card(cardPanFinished: self)
             swipeMadeAction()
             layer.shouldRasterize = false
@@ -234,8 +238,10 @@ extension PackCardView {
             self.removeFromSuperview()
         }
         
-        let timingParameters = UISpringTimingParameters(dampingRatio: 2, initialVelocity: CGVector(dx: 0.5, dy: 0.5))
-        animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: 1)
+        let timingParameters = UISpringTimingParameters(damping: 0.9, response: 1.2)
+        let preferredDuration = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters).duration
+        let durationFactor = CGFloat(preferredDuration / animator.duration)
+        animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: durationFactor)
     }
     
     private func cutting(_ angle: CGFloat, for portion: Int) -> [CGFloat] {
@@ -273,18 +279,31 @@ extension PackCardView {
     
     private func swipeAction(_ direction: SwipeResultDirection) {
         let completion =  self.delegate?.card(self, wasSwipedIn: direction, context: nil)
+        let location = panGestureRecognizer.location(in: superview)
+        let velocity = panGestureRecognizer.velocity(in: superview)
+        let radius = dot.y - location.y
+        let maxX = radius * tan(targetAngle)
+        let temp = velocity.x > 0 ? min(velocity.x, maxX) : max(velocity.x, -maxX)
+        let velocityAngle = atan(temp / radius)
         overlayView?.overlayState = direction
         overlayView?.alpha = 1.0
         
         if direction == .left {
             animator.isReversed.toggle()
         }
-        let timingParameters = UISpringTimingParameters(dampingRatio: 2, initialVelocity: CGVector(dx: 0.5, dy: 0.5))
-        animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: 1)
+        
+        let fraction = 0.5 - abs(0.5 - animator.fractionComplete)
+        let distance = fraction * targetAngle * 2
+        let relativeVelocity = min(abs(velocityAngle) / distance, 10000)
+        let timingParameters = UISpringTimingParameters(damping: 0.7, response: 0.8, initialVelocity: CGVector(dx: relativeVelocity, dy: 0))
+        let preferredDuration = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters).duration
+        let durationFactor = CGFloat(preferredDuration / animator.duration)
+        
         animator.addCompletion { position in
             completion?()
             self.removeFromSuperview()
         }
+        animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: durationFactor)
     }
     
     private func resetViewPositionAndTransformations() {
@@ -298,6 +317,7 @@ extension PackCardView {
         animator.addCompletion { position in
             self.delegate?.card(cardDidReset: self)
             self.dragBegin = false
+            self.isUserInteractionEnabled = true
         }
         animator.startAnimation()
     }
@@ -311,7 +331,7 @@ extension PackCardView {
     
     private func startAnimationIfNeeded() {
         if animator.isRunning { return }
-        let timingParameters = UISpringTimingParameters(damping: 1, response: 0.4)
+        let timingParameters = UISpringTimingParameters(damping: 1, response: 1.2)
         animator = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters)
         animator.addAnimations { [weak self] in
             guard let self = self else { return }
@@ -336,7 +356,7 @@ extension PackCardView {
     
     private var dragPercentage: CGFloat {
         guard dragDirection != nil else { return 0 }
-        let a = abs(animator.fractionComplete - 0.5)
+        let a = abs(animator.fractionComplete - 0.5) * targetAngle * 2
         return min(a / completionAngle, 1)
     }
     

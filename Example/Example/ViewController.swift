@@ -24,17 +24,10 @@ class ViewController: UIViewController {
         dataSource.append(["1111", "222", "3333", "123123", "123123", "LLE", "LEE"])
     }
     
-    @IBAction func sw(_ sender: Any) {
-        fableView.swipe(.left)
-    }
-    @IBAction func sr(_ sender: Any) {
-        fableView.swipe(.right)
-    }
-    
     private func setup()  {
         
         let siewSource = ViewSource { (data: String) -> UIViewController in
-            let c = V2()
+            let c = TestController()
             c.set(text: data)
             return c
         }
@@ -71,8 +64,17 @@ class ViewController: UIViewController {
     }
 }
 
+extension ViewController {
+    
+    @IBAction func sw(_ sender: Any) {
+        fableView.swipe(.left)
+    }
+    @IBAction func sr(_ sender: Any) {
+        fableView.swipe(.right)
+    }
+}
 
-class V2: UIViewController {
+class TestController: UIViewController {
     
     lazy var label = UILabel()
     
