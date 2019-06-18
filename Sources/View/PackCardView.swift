@@ -281,10 +281,6 @@ extension PackCardView {
         let completion =  self.delegate?.card(self, wasSwipedIn: direction, context: nil)
         let location = panGestureRecognizer.location(in: superview)
         let velocity = panGestureRecognizer.velocity(in: superview)
-        let radius = dot.y - location.y
-        let maxX = radius * tan(targetAngle)
-        let temp = velocity.x > 0 ? min(velocity.x, maxX) : max(velocity.x, -maxX)
-        let velocityAngle = atan(temp / radius)
         overlayView?.overlayState = direction
         overlayView?.alpha = 1.0
         
@@ -292,10 +288,12 @@ extension PackCardView {
             animator.isReversed.toggle()
         }
         
+        let radius = dot.y - location.y
         let fraction = 0.5 - abs(0.5 - animator.fractionComplete)
-        let distance = fraction * targetAngle * 2
-        let relativeVelocity = min(abs(velocityAngle) / distance, 10000)
-        let timingParameters = UISpringTimingParameters(damping: 0.7, response: 0.8, initialVelocity: CGVector(dx: relativeVelocity, dy: 0))
+        let angle = fraction * targetAngle * 2
+        let distance = radius * tan(angle)
+        let relativeVelocity = abs(velocity.x) / distance
+        let timingParameters = UISpringTimingParameters(damping: 1, response: 1.2, initialVelocity: CGVector(dx: relativeVelocity, dy: 0))
         let preferredDuration = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters).duration
         let durationFactor = CGFloat(preferredDuration / animator.duration)
         
