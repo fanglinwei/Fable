@@ -10,9 +10,9 @@ import Foundation
 
 class EmptyProvider: ItemProvider {
     
-    public var visibleCount: Int { return 0 }
+    public var visibleSize: Int { return 0 }
     
-    public var recyclesCount: Int { return 0 }
+    public var recycleSize: Int { return 0 }
     
     public var numberOfWaitings: Int { return 0 }
     

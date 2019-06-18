@@ -10,27 +10,30 @@ public class ArrayDataSource<Data> {
     
     public private(set) var data: [Data] = []
     
+    public var visibleCount: Int { return visibles.count }
+    public var recycleCount: Int { return recycles.count }
+    
     var visibles: PondArray<Data>
     var recycles: PondArray<Data>
-    let visibleCount: Int
-    let recycleCount: Int
+    let visibleSize: Int
+    let recycleSize: Int
     
     public var isVisibleFull: Bool {
-        return visibleCount == visibles.count
+        return visibleSize == visibleCount
     }
     
     let needsLoadFill = Delegate<[Data], Void>()
     
-    public init(visibleCount: Int = 3,
-                recycleCount: Int = 2) {
+    public init(visibleSize: Int = 3,
+                recycleSize: Int = 2) {
         
-        assert(visibleCount > 0, "visibleCount 必须大于一个")
-        assert(recycleCount > 0, "recycleCount 必须大于一个")
+        assert(visibleSize > 0, "visibleSize 必须大于一个")
+        assert(recycleSize > 0, "recycleSize 必须大于一个")
         
-        self.visibleCount = visibleCount
-        self.recycleCount = recycleCount
-        self.visibles =  PondArray(size: visibleCount)
-        self.recycles =  PondArray(size: recycleCount)
+        self.visibleSize = visibleSize
+        self.recycleSize = recycleSize
+        self.visibles =  PondArray(size: visibleSize)
+        self.recycles =  PondArray(size: recycleSize)
     }
     
     public func visibles(at: Int) -> Data? {
@@ -39,29 +42,6 @@ public class ArrayDataSource<Data> {
     
     public func recycles(at: Int) -> Data? {
         return recycles[safe: at]
-    }
-    
-    func clean() {
-        data.removeAll()
-        visibles.removeAll()
-        recycles.removeAll()
-    }
-    
-    func pushVisible() -> Data? {
-        guard let data = data.safeRemoveFirst() else {
-            return nil
-        }
-        
-        if let temp = visibles.append(data)  {
-            recycles.append(temp)
-        }
-        return data
-    }
-    
-    func popVisible() {
-        if let temp = visibles.safeRemoveFirst()  {
-            recycles.append(temp)
-        }
     }
     
     public var numberOfWaitings: Int {
@@ -86,6 +66,29 @@ public class ArrayDataSource<Data> {
         }
         
         needsLoadFill.call(temps)
+    }
+    
+    func clean() {
+        data.removeAll()
+        visibles.removeAll()
+        recycles.removeAll()
+    }
+    
+    func pushVisible() -> Data? {
+        guard let data = data.safeRemoveFirst() else {
+            return nil
+        }
+        
+        if let temp = visibles.append(data)  {
+            recycles.append(temp)
+        }
+        return data
+    }
+    
+    func popVisible() {
+        if let temp = visibles.safeRemoveFirst()  {
+            recycles.append(temp)
+        }
     }
 }
 

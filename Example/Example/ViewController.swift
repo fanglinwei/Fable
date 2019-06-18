@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         setup()
-        
+
         dataSource.append(["1111", "222", "3333", "123123", "123123", "LLE", "LEE"])
     }
     

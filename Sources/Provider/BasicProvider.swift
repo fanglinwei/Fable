@@ -13,8 +13,8 @@ public class BasicProvider<Data, View: FableCardable>: ItemProvider {
     public var dataSource: ArrayDataSource<Data>
     public var viewSource: ViewSource<Data, View>
     public var actionSource: ActionSource<Data>
-    public var visibleCount: Int { return dataSource.visibleCount }
-    public var recyclesCount: Int { return dataSource.recycleCount }
+    public var visibleSize: Int { return dataSource.visibleSize }
+    public var recycleSize: Int { return dataSource.recycleSize }
     
     var needsLoadFill: Delegate<[FableCard], Void> = .init()
     
@@ -35,7 +35,7 @@ public class BasicProvider<Data, View: FableCardable>: ItemProvider {
     }
     
     public var isVisibleFull: Bool {
-        return dataSource.visibleCount == dataSource.visibles.count
+        return dataSource.isVisibleFull
     }
     
     func takeVisible() -> FableCard? {

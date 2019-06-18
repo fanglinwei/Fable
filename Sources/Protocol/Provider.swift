@@ -11,8 +11,8 @@ import UIKit
 public protocol Provider {
     var numberOfWaitings: Int { get }
     var isVisibleFull: Bool { get }
-    var visibleCount: Int { get }
-    var recyclesCount: Int { get }
+    var visibleSize: Int { get }
+    var recycleSize: Int { get }
     
     func willReload()
     func didReload()

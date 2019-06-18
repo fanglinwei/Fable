@@ -16,6 +16,9 @@ public final class FableView: UIView {
                 return
             }
             flattenedProvider = provider.flattenedProvider()
+            _visibles.set(size: flattenedProvider.visibleSize)
+            _recycles.set(size: flattenedProvider.recycleSize)
+            
             flattenedProvider.needsLoadFill.delegate(on: self) { (self, cells) in
                 self.setNeedsLoadFill(cells)
             }
@@ -235,8 +238,6 @@ extension FableView {
         guard !isLoadFilling else { return }
         provider?.willReload()
         isLoadFilling = true
-        _visibles.set(size: flattenedProvider.visibleCount)
-        _recycles.set(size: flattenedProvider.recyclesCount)
         
         // 加载视图
         for cell in cells {
