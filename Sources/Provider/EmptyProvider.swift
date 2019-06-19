@@ -21,7 +21,7 @@ class EmptyProvider: ItemProvider {
     func swipeThresholdRatioMargin(_ card: FableCard?) -> CGFloat { return 0.5}
     func viewForCardOverlay(_ card: FableCard?) -> FableOverlayView? { return nil}
     func didShowCard(_ card: FableCard?) {}
-    func didSwipeCard(_ card: FableCard?, _ direction: SwipeResultDirection, _ context: [String: Any]?) {}
+    func didSwipeCard(_ card: FableCard?, _ direction: SwipeResultDirection, _ context: Any?) {}
     func didSelectCard(_ card: FableCard?) {}
     func panBegan(_ card: FableCard?) {}
     func panFinished(_ card: FableCard?) {}

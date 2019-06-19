@@ -25,7 +25,7 @@ public class ActionSource<Data> {
     /// 卡片显示
     public let didShowCard = Delegate<Context, Void>()
     /// 当卡片出去   (主动调用Swipe滑出/手势滑出)
-    public let didSwipeCard = Delegate<(Context, SwipeResultDirection, context: [String: Any]?), Void>()
+    public let didSwipeCard = Delegate<(Context, SwipeResultDirection, context: Any?), Void>()
     /// 卡片被点
     public let didSelectCard = Delegate<Context, Void>()
     /// 手势开始

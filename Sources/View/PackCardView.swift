@@ -12,7 +12,7 @@ typealias SwipedCompletion = () -> Void
 protocol PackCardViewDelegate: class {
     
     func card(_ card: PackCardView, wasDraggedWithFinishPercentage percentage: CGFloat, inDirection direction: SwipeResultDirection)
-    func card(_ card: PackCardView, wasSwipedIn direction: SwipeResultDirection, context: [String: Any]?) -> SwipedCompletion
+    func card(_ card: PackCardView, wasSwipedIn direction: SwipeResultDirection, context: Any?) -> SwipedCompletion
     func card(_ card: PackCardView, shouldSwipeIn direction: SwipeResultDirection) -> Bool
     func card(cardWillReset card: PackCardView)
     func card(cardDidReset card: PackCardView)
@@ -84,6 +84,12 @@ public final class PackCardView: UIView {
         setup()
     }
     
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        self.overlayView?.frame = bounds
+        self.contentCard?._content.frame = bounds
+    }
+    
     private func setup() {
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(PackCardView.panGestureRecognized(_:)))
         addGestureRecognizer(panGestureRecognizer)
@@ -114,14 +120,13 @@ extension PackCardView {
             self.overlayView = overlay
             overlay.alpha = 0;
             self.addSubview(overlay)
-            configureOverlayView()
             self.insertSubview(cell._content, belowSubview: overlay)
         } else {
             self.addSubview(cell._content)
         }
         
         self.contentCard = cell
-        configureContentView()
+        setNeedsLayout()
     }
     
     private func configureSwipePercentageMargin() {
@@ -131,20 +136,6 @@ extension PackCardView {
                 return
         }
         swipePercentageMargin = ratio
-    }
-    
-    private func configureOverlayView() {
-        guard let overlay = self.overlayView else {
-            return
-        }
-        overlay.fillToSuperview()
-    }
-    
-    private func configureContentView() {
-        guard let contentView = self.contentCard?._content else {
-            return
-        }
-        contentView.fillToSuperview()
     }
 }
 
@@ -214,7 +205,7 @@ extension PackCardView {
     }
     
     func swipe(_ direction: SwipeResultDirection,
-               _ context: [String: Any]?,
+               _ context: Any?,
                completionHandler: @escaping () -> Void) {
         
         guard !dragBegin else { return }

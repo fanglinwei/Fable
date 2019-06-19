@@ -162,7 +162,7 @@ extension FableView: PackCardViewDelegate {
         flattenedProvider.didDraggedPercentage(currentView, percentage, direction)
     }
     
-    func card(_ card: PackCardView, wasSwipedIn direction: SwipeResultDirection, context: [String: Any]?) -> SwipedCompletion {
+    func card(_ card: PackCardView, wasSwipedIn direction: SwipeResultDirection, context: Any?) -> SwipedCompletion {
         return swipedAction(direction, context: context)
     }
     
@@ -293,7 +293,7 @@ extension FableView {
     
     public func swipe(_ direction: SwipeResultDirection,
                       force: Bool = false,
-                      context: [String: Any]? = nil) {
+                      context: Any? = nil) {
         let shouldSwipe =  flattenedProvider.shouldSwipeCard(currentView, direction)
         guard force || shouldSwipe else { return }
         if !animationSemaphore.isAnimating {
@@ -313,7 +313,7 @@ extension FableView {
 extension FableView {
     
     // MARK: Actions
-    private func swipedAction(_ direction: SwipeResultDirection, context: [String: Any]?) -> SwipedCompletion {
+    private func swipedAction(_ direction: SwipeResultDirection, context: Any?) -> SwipedCompletion {
         let current = currentView
         
         if let temp = _visibles.safeRemoveFirst() {

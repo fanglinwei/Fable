@@ -81,7 +81,7 @@ extension BasicProvider {
         actionSource.didShowCard.call(context)
     }
     
-    func didSwipeCard(_ card: FableCard?, _ direction: SwipeResultDirection, _ context: [String: Any]?) {
+    func didSwipeCard(_ card: FableCard?, _ direction: SwipeResultDirection, _ context: Any?) {
         guard let data = dataSource.recycles.last else { return }
         let _context = Context(card, data)
         actionSource.didSwipeCard.call((_context, direction, context))
