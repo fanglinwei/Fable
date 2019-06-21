@@ -7,12 +7,11 @@
 //
 
 private let screenSize = UIScreen.main.bounds.size
-typealias SwipedCompletion = () -> Void
 
 protocol PackCardViewDelegate: class {
     
     func card(_ card: PackCardView, wasDraggedWithFinishPercentage percentage: CGFloat, inDirection direction: SwipeResultDirection)
-    func card(_ card: PackCardView, wasSwipedIn direction: SwipeResultDirection, context: Any?) -> SwipedCompletion
+    func card(_ card: PackCardView, wasSwipedIn direction: SwipeResultDirection, context: Any?)
     func card(_ card: PackCardView, shouldSwipeIn direction: SwipeResultDirection) -> Bool
     func card(cardWillReset card: PackCardView)
     func card(cardDidReset card: PackCardView)
@@ -209,7 +208,7 @@ extension PackCardView {
                completionHandler: @escaping () -> Void) {
         
         guard !dragBegin else { return }
-        let completion = delegate?.card(self, wasSwipedIn: direction, context: context)
+        delegate?.card(self, wasSwipedIn: direction, context: context)
         
         set(anchorPoint: CGPoint(x: 0.5, y: dot.y / bounds.height))
         transform = CGAffineTransform(rotationAngle: -targetAngle)
@@ -224,7 +223,6 @@ extension PackCardView {
         
         animator.addCompletion { [weak self]_ in
             guard let self = self else { return }
-            completion?()
             completionHandler()
             self.removeFromSuperview()
         }
@@ -269,7 +267,8 @@ extension PackCardView {
     }
     
     private func swipeAction(_ direction: SwipeResultDirection) {
-        let completion =  self.delegate?.card(self, wasSwipedIn: direction, context: nil)
+        delegate?.card(self, wasSwipedIn: direction, context: nil)
+        
         let location = panGestureRecognizer.location(in: superview)
         let velocity = panGestureRecognizer.velocity(in: superview)
         overlayView?.overlayState = direction
@@ -289,7 +288,6 @@ extension PackCardView {
         let durationFactor = CGFloat(preferredDuration / animator.duration)
         
         animator.addCompletion { position in
-            completion?()
             self.removeFromSuperview()
         }
         animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: durationFactor)

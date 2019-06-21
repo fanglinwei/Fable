@@ -96,7 +96,7 @@ public final class FableView: UIView {
         guard
             !animationSemaphore.isAnimating,
             !cardIsDragging else {
-            return
+                return
         }
         
         layoutDeck()
@@ -162,8 +162,8 @@ extension FableView: PackCardViewDelegate {
         flattenedProvider.didDraggedPercentage(currentView, percentage, direction)
     }
     
-    func card(_ card: PackCardView, wasSwipedIn direction: SwipeResultDirection, context: Any?) -> SwipedCompletion {
-        return swipedAction(direction, context: context)
+    func card(_ card: PackCardView, wasSwipedIn direction: SwipeResultDirection, context: Any?) {
+        swipedAction(direction, context: context)
     }
     
     func card(_ card: PackCardView, shouldSwipeIn direction: SwipeResultDirection) -> Bool {
@@ -258,7 +258,7 @@ extension FableView {
             view.isUserInteractionEnabled = i == 0
             insertSubview(view, aboveSubview: backgroundView)
         }
-    
+        
         isLoadFilling = false
         loadFillCount += 1
         flattenedProvider.didReload()
@@ -313,7 +313,7 @@ extension FableView {
 extension FableView {
     
     // MARK: Actions
-    private func swipedAction(_ direction: SwipeResultDirection, context: Any?) -> SwipedCompletion {
+    private func swipedAction(_ direction: SwipeResultDirection, context: Any?) {
         let current = currentView
         
         if let temp = _visibles.safeRemoveFirst() {
@@ -335,21 +335,15 @@ extension FableView {
             animateCardsAfterLoadingWithCompletion { [weak self] in
                 guard let self = self else { return }
                 self.animationSemaphore.decrement()
-            }
-            return { [weak self] in
-                guard let self = self else { return }
                 self.flattenedProvider.didSwipeCard(current, direction, context)
                 self.flattenedProvider.didShowCard(self.currentView)
                 self.setNeedsLayout()
             }
         } else {
             animationSemaphore.decrement()
-            return { [weak self] in
-                guard let self = self else { return }
-                self.flattenedProvider.didSwipeCard(current, direction, context)
-                self.flattenedProvider.didRunOutOfVisibles()
-                self.setNeedsLayout()
-            }
+            self.flattenedProvider.didSwipeCard(current, direction, context)
+            self.flattenedProvider.didRunOutOfVisibles()
+            self.setNeedsLayout()
         }
     }
     
