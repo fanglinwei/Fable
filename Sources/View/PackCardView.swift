@@ -184,7 +184,7 @@ extension PackCardView {
             
             let a = dragDistance.x / (dot.y - location.y)
             let rotationAngle =  atan(a)
-            var fraction = rotationAngle / (targetAngle * 2)
+            let fraction = rotationAngle / (targetAngle * 2)
             fractionComplete = fraction + animationProgress
             let percentage = dragPercentage
             updateOverlayWithFinishPercent(percentage, direction: dragDirection)
