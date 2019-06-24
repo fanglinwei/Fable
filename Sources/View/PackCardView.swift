@@ -67,8 +67,6 @@ public final class PackCardView: UIView {
     }()
     
     private var animator = UIViewPropertyAnimator()
-    private var animationProgress: CGFloat = 0
-    private var targetTransform = CGAffineTransform.identity
     
     /// 动画进度
     /*
@@ -85,6 +83,8 @@ public final class PackCardView: UIView {
             transform = CGAffineTransform(rotationAngle: angle)
         }
     }
+    
+    private var animationProgress: CGFloat = 0
     
     override public var frame: CGRect {
         didSet {
