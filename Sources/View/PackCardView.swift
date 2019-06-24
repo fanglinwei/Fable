@@ -45,7 +45,6 @@ public final class PackCardView: UIView {
     private var overlayView: FableOverlayView?
     public private(set) var contentCard: FableCardable?
     
-    private var animationDirectionY: CGFloat = 1.0
     private var swipePercentageMargin: CGFloat = 1
     
     /// 滑动圆心
@@ -71,12 +70,28 @@ public final class PackCardView: UIView {
     private var animationProgress: CGFloat = 0
     private var targetTransform = CGAffineTransform.identity
     
+    /// 动画进度
+    /*
+     手动管理动画进度代替UIViewPropertyAnimator.fractionComplete属性
+     在iOS10设备下会出现一下问题:
+     1) UIViewPropertyAnimator.fractionComplete 动画效果不稳定
+     2) 调用animator.continueAnimation(withTimingParameters:, durationFactor:)方法结束动画会不生效.
+     */
+    private var fractionComplete: CGFloat = 0 {
+        didSet {
+            var fraction = max(fractionComplete, 0)
+            fraction = min(fractionComplete, 1)
+            let angle = targetAngle * 2 * (fraction - 0.5)
+            transform = CGAffineTransform(rotationAngle: angle)
+        }
+    }
+    
     override public var frame: CGRect {
         didSet {
             configureSwipePercentageMargin()
         }
     }
-
+    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
@@ -148,18 +163,15 @@ extension PackCardView {
         case .began:
             removeAnimations()
             dragBegin = true
-            animationDirectionY = 1.0
+            delegate?.card(cardPanBegan: self)
+            // 图像优化
+            // https://www.jianshu.com/p/2a01e5e2141f
             layer.rasterizationScale = UIScreen.main.scale
             layer.shouldRasterize = true
-            delegate?.card(cardPanBegan: self)
             
             set(anchorPoint: CGPoint(x: 0.5, y: dot.y / bounds.height))
-            transform = CGAffineTransform(rotationAngle: -targetAngle)
-            targetTransform = CGAffineTransform(rotationAngle: targetAngle)
-            startAnimationIfNeeded()
-            animator.pauseAnimation()
-            animator.fractionComplete = 0.5
-            animationProgress = animator.fractionComplete
+            fractionComplete = 0.5
+            animationProgress = fractionComplete
             
         case .changed:
             
@@ -173,8 +185,7 @@ extension PackCardView {
             let a = dragDistance.x / (dot.y - location.y)
             let rotationAngle =  atan(a)
             var fraction = rotationAngle / (targetAngle * 2)
-            if animator.isReversed { fraction *= -1 }
-            animator.fractionComplete = fraction + animationProgress
+            fractionComplete = fraction + animationProgress
             let percentage = dragPercentage
             updateOverlayWithFinishPercent(percentage, direction: dragDirection)
             if let dragDirection = dragDirection {
@@ -201,21 +212,23 @@ extension PackCardView {
     }
     
     internal func swipe(_ direction: SwipeResultDirection,
-               _ context: Any?,
-               completionHandler: @escaping () -> Void) {
-        
+                        _ context: Any?,
+                        completionHandler: @escaping () -> Void) {
         guard !dragBegin else { return }
         delegate?.card(self, wasSwipedIn: direction, context: context)
         
         set(anchorPoint: CGPoint(x: 0.5, y: dot.y / bounds.height))
-        transform = CGAffineTransform(rotationAngle: -targetAngle)
-        targetTransform = CGAffineTransform(rotationAngle: targetAngle)
-        startAnimationIfNeeded()
-        animator.pauseAnimation()
-        animator.fractionComplete = 0.5
+        fractionComplete = 0.5
         
-        if direction == .left {
-            animator.isReversed.toggle()
+        let timingParameters = UISpringTimingParameters(damping: 0.9, response: 1.2)
+        animator = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters)
+        animator.addAnimations {
+            switch direction {
+            case .left:
+                self.fractionComplete = 0
+            case .right:
+                self.fractionComplete = 1
+            }
         }
         
         animator.addCompletion { [weak self]_ in
@@ -224,10 +237,7 @@ extension PackCardView {
             self.removeFromSuperview()
         }
         
-        let timingParameters = UISpringTimingParameters(damping: 0.9, response: 1.2)
-        let preferredDuration = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters).duration
-        let durationFactor = CGFloat(preferredDuration / animator.duration)
-        animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: durationFactor)
+        animator.startAnimation()
     }
 }
 
@@ -257,23 +267,28 @@ extension PackCardView {
         overlayView?.overlayState = direction
         overlayView?.alpha = 1.0
         
-        if direction == .left {
-            animator.isReversed.toggle()
-        }
-        
         let radius = dot.y - location.y
-        let fraction = 0.5 - abs(0.5 - animator.fractionComplete)
+        let fraction = 0.5 - abs(0.5 - fractionComplete)
         let angle = fraction * targetAngle * 2
         let distance = radius * tan(angle)
         let relativeVelocity = abs(velocity.x) / distance
         let timingParameters = UISpringTimingParameters(damping: 1, response: 1.2, initialVelocity: CGVector(dx: relativeVelocity, dy: 0))
-        let preferredDuration = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters).duration
-        let durationFactor = CGFloat(preferredDuration / animator.duration)
+        animator = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters)
+        animator.addAnimations {
+            switch direction {
+            case .left:
+                self.fractionComplete = 0
+            case .right:
+                self.fractionComplete = 1
+            }
+        }
         
         animator.addCompletion { position in
+            self.dragBegin = false
             self.removeFromSuperview()
         }
-        animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: durationFactor)
+        
+        animator.startAnimation()
     }
     
     private func resetViewPositionAndTransformations() {
@@ -281,7 +296,7 @@ extension PackCardView {
         removeAnimations()
         animator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.7)
         animator.addAnimations {
-            self.transform = .identity
+            self.fractionComplete = 0.5
             self.overlayView?.alpha = 0
         }
         animator.addCompletion { position in
@@ -297,21 +312,6 @@ extension PackCardView {
         let progress = max(min(percent/swipePercentageMargin, 1.0), 0)
         overlayView?.update(progress: progress)
     }
-    
-    
-    private func startAnimationIfNeeded() {
-        if animator.isRunning { return }
-        let timingParameters = UISpringTimingParameters(damping: 1, response: 1.2)
-        animator = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters)
-        animator.addAnimations { [weak self] in
-            guard let self = self else { return }
-            self.transform = self.targetTransform
-        }
-        animator.addCompletion { [weak self] position in
-            guard let self = self else { return }
-            self.dragBegin = false
-        }
-    }
 }
 
 extension PackCardView {
@@ -321,12 +321,12 @@ extension PackCardView {
     }
     
     private var dragDirection: SwipeResultDirection? {
-        return (animator.fractionComplete - 0.5 > 0) ? .right : .left
+        return (fractionComplete - 0.5 > 0) ? .right : .left
     }
     
     private var dragPercentage: CGFloat {
         guard dragDirection != nil else { return 0 }
-        let a = abs(animator.fractionComplete - 0.5) * targetAngle * 2
+        let a = abs(fractionComplete - 0.5) * targetAngle * 2
         return min(a / completionAngle, 1)
     }
     
