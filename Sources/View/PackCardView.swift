@@ -42,12 +42,9 @@ public final class PackCardView: UIView {
     }
     
     internal var dragBegin = false
-    
     private var overlayView: FableOverlayView?
     public private(set) var contentCard: FableCardable?
     
-    private var panGestureRecognizer: UIPanGestureRecognizer!
-    private var tapGestureRecognizer: UITapGestureRecognizer!
     private var animationDirectionY: CGFloat = 1.0
     private var swipePercentageMargin: CGFloat = 1
     
@@ -57,22 +54,29 @@ public final class PackCardView: UIView {
         return CGPoint(x: bounds.width * 0.5, y: abs(r))
     }
     
+    private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(panRecognized))
+        pan.delegate = self
+        return pan
+    }()
+    
+    private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapRecognized))
+        tap.delegate = self
+        tap.cancelsTouchesInView = false
+        return tap
+    }()
+    
     private var animator = UIViewPropertyAnimator()
     private var animationProgress: CGFloat = 0
     private var targetTransform = CGAffineTransform.identity
-    
     
     override public var frame: CGRect {
         didSet {
             configureSwipePercentageMargin()
         }
     }
-    
-    init() {
-        super.init(frame: CGRect.zero)
-        setup()
-    }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
@@ -90,30 +94,25 @@ public final class PackCardView: UIView {
     }
     
     private func setup() {
-        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(PackCardView.panGestureRecognized(_:)))
         addGestureRecognizer(panGestureRecognizer)
-        panGestureRecognizer.delegate = self
-        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(PackCardView.tapRecognized(_:)))
-        tapGestureRecognizer.delegate = self
-        tapGestureRecognizer.cancelsTouchesInView = false
         addGestureRecognizer(tapGestureRecognizer)
     }
     
     deinit {
         print("deinit:\t\(classForCoder)")
-        contentCard?.removeFromSuper()
         removeGestureRecognizer(panGestureRecognizer)
         removeGestureRecognizer(tapGestureRecognizer)
+        contentCard?.removeFromSuper()
     }
 }
 
 // MARK: - configure
 extension PackCardView {
     
-    //MARK: Configurations
     func configure(_ cell: FableCardable, overlayView: FableOverlayView?) {
         self.overlayView?.removeFromSuperview()
         self.contentCard?.removeFromSuper()
+        self.contentCard = cell
         
         if let overlay = overlayView {
             self.overlayView = overlay
@@ -123,8 +122,6 @@ extension PackCardView {
         } else {
             self.addSubview(cell._content)
         }
-        
-        self.contentCard = cell
         setNeedsLayout()
     }
     
@@ -145,7 +142,7 @@ extension PackCardView {
         delegate?.card(cardWasTapped: self)
     }
     
-    @objc func panGestureRecognized(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc func panRecognized(_ gestureRecognizer: UIPanGestureRecognizer) {
         
         switch gestureRecognizer.state {
         case .began:
@@ -196,14 +193,14 @@ extension PackCardView {
     }
 }
 
+//MARK: Public
 extension PackCardView {
     
-    //MARK: Public
-    func removeAnimations() {
+    internal func removeAnimations() {
         animator.stopAnimation(true)
     }
     
-    func swipe(_ direction: SwipeResultDirection,
+    internal func swipe(_ direction: SwipeResultDirection,
                _ context: Any?,
                completionHandler: @escaping () -> Void) {
         
@@ -231,20 +228,6 @@ extension PackCardView {
         let preferredDuration = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters).duration
         let durationFactor = CGFloat(preferredDuration / animator.duration)
         animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: durationFactor)
-    }
-    
-    private func cutting(_ angle: CGFloat, for portion: Int) -> [CGFloat] {
-        return (0 ..< portion).reduce(into: []) { (array, index) in
-            let temp = angle / CGFloat(portion) * CGFloat(index)
-            array.append(temp)
-        }
-    }
-    
-    private func keyTimes(for portion: Int) -> [NSNumber] {
-        return (0 ..< portion).reduce(into: []) { (array, index) in
-            let temp = 1 / Double(portion) * Double(index)
-            array.append(NSNumber(value: temp))
-        }
     }
 }
 
@@ -347,7 +330,7 @@ extension PackCardView {
         return min(a / completionAngle, 1)
     }
     
-    var completionAngle: CGFloat {
+    private var completionAngle: CGFloat {
         let a = bounds.width * 0.5 / (dot.y - bounds.height)
         return atan(a)
     }
@@ -367,18 +350,5 @@ extension PackCardView: UIGestureRecognizerDelegate {
             return true
         }
         return delegate?.card(cardShouldDrag: self) ?? true
-    }
-}
-
-extension UIView {
-    
-    func set(anchorPoint point: CGPoint ) {
-        let newAnchorPoint = point
-        let oldPosition = CGPoint(x: bounds.size.width * layer.anchorPoint.x, y: bounds.size.height * layer.anchorPoint.y)
-        let newPosition = CGPoint(x: bounds.size.width * newAnchorPoint.x, y: bounds.size.height * newAnchorPoint.y)
-        layer.anchorPoint = newAnchorPoint
-        layer.position = CGPoint(x: layer.position.x - oldPosition.x + newPosition.x, y: layer.position.y - oldPosition.y + newPosition.y)
-        frame.origin.x = layer.position.x - layer.anchorPoint.x * bounds.size.width
-        frame.origin.y = layer.position.y - layer.anchorPoint.y * bounds.size.height
     }
 }

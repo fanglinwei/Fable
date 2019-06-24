@@ -46,6 +46,16 @@ extension UIView {
             NSLayoutConstraint.activate([left, right, top, bottom])
         }
     }
+    
+    func set(anchorPoint point: CGPoint ) {
+        let newAnchorPoint = point
+        let oldPosition = CGPoint(x: bounds.size.width * layer.anchorPoint.x, y: bounds.size.height * layer.anchorPoint.y)
+        let newPosition = CGPoint(x: bounds.size.width * newAnchorPoint.x, y: bounds.size.height * newAnchorPoint.y)
+        layer.anchorPoint = newAnchorPoint
+        layer.position = CGPoint(x: layer.position.x - oldPosition.x + newPosition.x, y: layer.position.y - oldPosition.y + newPosition.y)
+        frame.origin.x = layer.position.x - layer.anchorPoint.x * bounds.size.width
+        frame.origin.y = layer.position.y - layer.anchorPoint.y * bounds.size.height
+    }
 }
 
 extension CGAffineTransform {
