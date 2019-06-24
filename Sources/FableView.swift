@@ -293,7 +293,7 @@ extension FableView: PackCardViewDelegate {
         if shouldMoveBackgroundCard {
             moveOtherCardsWithPercentage(percentage)
         }
-        flattenedProvider.didDraggedPercentage(currentView, percentage, direction)
+        flattenedProvider.didDraggedPercentage(card.contentCard, percentage, direction)
     }
     
     func card(_ card: PackCardView, wasSwipedIn direction: SwipeResultDirection, context: Any?) {
@@ -301,7 +301,7 @@ extension FableView: PackCardViewDelegate {
     }
     
     func card(_ card: PackCardView, shouldSwipeIn direction: SwipeResultDirection) -> Bool {
-        return flattenedProvider.shouldSwipeCard(currentView, direction)
+        return flattenedProvider.shouldSwipeCard(card.contentCard, direction)
     }
     
     func card(cardWillReset card: PackCardView) {
@@ -321,15 +321,15 @@ extension FableView: PackCardViewDelegate {
     }
     
     func card(cardDidReset card: PackCardView) {
-        flattenedProvider.didResetCard(currentView)
+        flattenedProvider.didResetCard(card.contentCard)
     }
     
     func card(cardWasTapped card: PackCardView) {
-        flattenedProvider.didSelectCard(currentView)
+        flattenedProvider.didSelectCard(card.contentCard)
     }
     
     func card(cardSwipeThresholdRatioMargin card: PackCardView) -> CGFloat {
-        return flattenedProvider.swipeThresholdRatioMargin(currentView)
+        return flattenedProvider.swipeThresholdRatioMargin(card.contentCard)
     }
     
     func card(cardAllowedDirections card: PackCardView) -> [SwipeResultDirection] {
@@ -345,10 +345,10 @@ extension FableView: PackCardViewDelegate {
     }
     
     func card(cardPanBegan card: PackCardView) {
-        flattenedProvider.panBegan(currentView)
+        flattenedProvider.panBegan(card.contentCard)
     }
     
     func card(cardPanFinished card: PackCardView) {
-        flattenedProvider.panFinished(currentView)
+        flattenedProvider.panFinished(card.contentCard)
     }
 }
