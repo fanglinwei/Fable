@@ -124,7 +124,7 @@ public final class PackCardView: UIView {
 // MARK: - configure
 extension PackCardView {
     
-    func configure(_ cell: FableCardable, overlayView: FableOverlayView?) {
+    internal func configure(_ cell: FableCardable, overlayView: FableOverlayView?) {
         self.overlayView?.removeFromSuperview()
         self.contentCard?.removeFromSuper()
         self.contentCard = cell
@@ -153,11 +153,13 @@ extension PackCardView {
 // MARK: - GestureRecognizers
 extension PackCardView {
     
-    @objc private func tapRecognized(_ recogznier: UITapGestureRecognizer) {
+    @objc
+    private func tapRecognized(_ recogznier: UITapGestureRecognizer) {
         delegate?.card(cardWasTapped: self)
     }
     
-    @objc func panRecognized(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc
+    private func panRecognized(_ gestureRecognizer: UIPanGestureRecognizer) {
         
         switch gestureRecognizer.state {
         case .began:
