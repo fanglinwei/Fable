@@ -26,7 +26,7 @@ class EmptyProvider: ItemProvider {
     func panBegan(_ card: FableCard?) {}
     func panFinished(_ card: FableCard?) {}
     func didDraggedPercentage(_ card: FableCard?, _ percentage: CGFloat, _ direction: SwipeResultDirection) {}
-    func shouldSwipeCard(_ card: FableCard?, _ direction: SwipeResultDirection) -> Bool { return true}
+    func shouldSwipeCard(_ card: FableCard?, _ direction: SwipeResultDirection, _ context: Any?) -> Bool { return true}
     func willResetCard(_ card: FableCard?) {}
     func didResetCard(_ card: FableCard?) {}
     func didRunOutOfVisibles() {}

@@ -37,7 +37,7 @@ protocol ItemProvider: Provider {
     func panBegan(_ card: FableCard?)
     func panFinished(_ card: FableCard?)
     func didDraggedPercentage(_ card: FableCard?, _ percentage: CGFloat, _ direction: SwipeResultDirection)
-    func shouldSwipeCard(_ card: FableCard?, _ direction: SwipeResultDirection) -> Bool
+    func shouldSwipeCard(_ card: FableCard?, _ direction: SwipeResultDirection, _ context: Any?) -> Bool
     func willResetCard(_ card: FableCard?)
     func didResetCard(_ card: FableCard?)
     func didRunOutOfVisibles()

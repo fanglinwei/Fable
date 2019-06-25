@@ -35,7 +35,7 @@ public class ActionSource<Data> {
     ///  手势滑动进度
     public let didDraggedPercentage = Delegate<(Context, percentage: CGFloat, direction: SwipeResultDirection), Void>()
     /// 是否能拖出去
-    public let shouldSwipeCard = Delegate<(Context, direction: SwipeResultDirection), Bool>()
+    public let shouldSwipeCard = Delegate<(Context, SwipeResultDirection, context: Any?), Bool>()
     /// 即将重置卡片
     public let willResetCard = Delegate<Context, Void>()
     /// 已经重置卡片

@@ -111,10 +111,13 @@ extension BasicProvider {
         actionSource.didDraggedPercentage.call((context, percentage, direction))
     }
     
-    func shouldSwipeCard(_ card: FableCard?, _ direction: SwipeResultDirection) -> Bool {
+    func shouldSwipeCard(_ card: FableCard?,
+                         _ direction: SwipeResultDirection,
+                         _ context: Any?) -> Bool {
+        
         guard let data = dataSource.visibles.first else { return true }
-        let context = Context(card, data)
-        return actionSource.shouldSwipeCard.call((context, direction)) ?? true
+        let _context = Context(card, data)
+        return actionSource.shouldSwipeCard.call((_context, direction, context)) ?? true
     }
     
     func willResetCard(_ card: FableCard?) {

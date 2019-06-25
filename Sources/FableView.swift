@@ -125,7 +125,7 @@ extension FableView {
     public func swipe(_ direction: SwipeResultDirection,
                       force: Bool = false,
                       context: Any? = nil) {
-        let shouldSwipe =  flattenedProvider.shouldSwipeCard(currentView, direction)
+        let shouldSwipe =  flattenedProvider.shouldSwipeCard(currentView, direction, context)
         guard force || shouldSwipe else { return }
         guard !animationSemaphore.isAnimating else { return }
         guard
@@ -300,8 +300,8 @@ extension FableView: PackCardViewDelegate {
         swipedAction(direction, context: context)
     }
     
-    func card(_ card: PackCardView, shouldSwipeIn direction: SwipeResultDirection) -> Bool {
-        return flattenedProvider.shouldSwipeCard(card.contentCard, direction)
+    func card(_ card: PackCardView, shouldSwipeIn direction: SwipeResultDirection, context: Any?) -> Bool {
+        return flattenedProvider.shouldSwipeCard(card.contentCard, direction, context)
     }
     
     func card(cardWillReset card: PackCardView) {
