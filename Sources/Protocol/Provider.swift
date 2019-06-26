@@ -33,7 +33,7 @@ protocol ItemProvider: Provider {
     func viewForCardOverlay(_ card: FableCard?) -> FableOverlayView?
     func didShowCard(_ card: FableCard?)
     func didSwipeCard(_ card: FableCard?, _ direction: SwipeResultDirection, _ context: Any?)
-    func slipThroughContext(_ card: FableCard?, _ direction: SwipeResultDirection) -> Any?
+    func slideThroughContext(_ card: FableCard?, _ direction: SwipeResultDirection) -> Any?
     func didSelectCard(_ card: FableCard?)
     func panBegan(_ card: FableCard?)
     func panFinished(_ card: FableCard?)

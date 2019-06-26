@@ -13,7 +13,7 @@ protocol PackCardViewDelegate: class {
     func card(_ card: PackCardView, wasDraggedWithFinishPercentage percentage: CGFloat, inDirection direction: SwipeResultDirection)
     func card(_ card: PackCardView, wasSwipedIn direction: SwipeResultDirection, context: Any?)
     func card(_ card: PackCardView, shouldSwipeIn direction: SwipeResultDirection, context: Any?) -> Bool
-    func card(_ card: PackCardView, slipThroughContext direction: SwipeResultDirection) -> Any?
+    func card(_ card: PackCardView, slideThroughContext direction: SwipeResultDirection) -> Any?
     func card(cardWillReset card: PackCardView)
     func card(cardDidReset card: PackCardView)
     func card(cardWasTapped card: PackCardView)
@@ -249,7 +249,7 @@ extension PackCardView {
     private func swipeMadeAction() {
         let shouldSwipe = { [weak self] (direction: SwipeResultDirection) -> Bool in
             guard let self = self else { return true }
-            let context = self.delegate?.card(self, slipThroughContext: direction)
+            let context = self.delegate?.card(self, slideThroughContext: direction)
             return self.delegate?.card(self, shouldSwipeIn: direction, context: context) ?? true
         }
         if
@@ -264,7 +264,7 @@ extension PackCardView {
     }
     
     private func swipeAction(_ direction: SwipeResultDirection) {
-        let context = delegate?.card(self, slipThroughContext: direction)
+        let context = delegate?.card(self, slideThroughContext: direction)
         delegate?.card(self, wasSwipedIn: direction, context: context)
         
         let location = panGestureRecognizer.location(in: superview)

@@ -58,7 +58,7 @@ class ViewController: UIViewController {
             print("didResetCard\(context.data)")
         }
         
-        action.slipThroughContext.delegate(on: self) { (self, _) -> Any? in
+        action.slideThroughContext.delegate(on: self) { (self, _) -> Any? in
             return "1993"
         }
         

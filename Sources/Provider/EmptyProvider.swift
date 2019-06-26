@@ -22,7 +22,7 @@ class EmptyProvider: ItemProvider {
     func viewForCardOverlay(_ card: FableCard?) -> FableOverlayView? { return nil}
     func didShowCard(_ card: FableCard?) {}
     func didSwipeCard(_ card: FableCard?, _ direction: SwipeResultDirection, _ context: Any?) {}
-    func slipThroughContext(_ card: FableCard?, _ direction: SwipeResultDirection) -> Any? { return nil }
+    func slideThroughContext(_ card: FableCard?, _ direction: SwipeResultDirection) -> Any? { return nil }
     func didSelectCard(_ card: FableCard?) {}
     func panBegan(_ card: FableCard?) {}
     func panFinished(_ card: FableCard?) {}

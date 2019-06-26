@@ -300,8 +300,8 @@ extension FableView: PackCardViewDelegate {
         swipedAction(direction, context: context)
     }
     
-    func card(_ card: PackCardView, slipThroughContext direction: SwipeResultDirection) -> Any? {
-        return flattenedProvider.slipThroughContext(card.contentCard, direction)
+    func card(_ card: PackCardView, slideThroughContext direction: SwipeResultDirection) -> Any? {
+        return flattenedProvider.slideThroughContext(card.contentCard, direction)
     }
     
     func card(_ card: PackCardView, shouldSwipeIn direction: SwipeResultDirection, context: Any?) -> Bool {

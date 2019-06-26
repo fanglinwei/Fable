@@ -148,9 +148,9 @@ extension BasicProvider {
         return actionSource.shouldDragCard.call(context) ?? true
     }
     
-    func slipThroughContext(_ card: FableCard?, _ direction: SwipeResultDirection) -> Any? {
+    func slideThroughContext(_ card: FableCard?, _ direction: SwipeResultDirection) -> Any? {
         guard let data = dataSource.visibles.first else { return true }
         let _context = Context(card, data)
-        return actionSource.slipThroughContext.call((_context, direction)) ?? nil
+        return actionSource.slideThroughContext.call((_context, direction)) ?? nil
     }
 }
