@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name         = "Fable"
-s.version      = "0.0.6"
+s.version      = "0.0.7"
 s.summary      = "An elegant highlight focus guide written in swift"
 
 s.homepage     = "https://github.com/fanglinwei/Fable"
