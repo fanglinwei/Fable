@@ -58,6 +58,21 @@ class ViewController: UIViewController {
             print("didResetCard\(context.data)")
         }
         
+        action.slipThroughContext.delegate(on: self) { (self, _) -> Any? in
+            return "1993"
+        }
+        
+        action.shouldSwipeCard.delegate(on: self) { (self, arg1) -> Bool in
+            let (_, _, context) = arg1
+            print("shouldSwipeCard\(context ?? "")")
+            return true
+        }
+        
+        action.didSwipeCard.delegate(on: self) { (self, arg1) in
+            let (_, _, context) = arg1
+            print("didSwipeCard\(context ?? "")")
+        }
+        
         let provider = BasicProvider(dataSource: dataSource, viewSource: siewSource, actionSource: action)
         
         fableView.provider = provider

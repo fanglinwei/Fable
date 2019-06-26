@@ -24,6 +24,8 @@ public class ActionSource<Data> {
     public let viewForCardOverlay = Delegate<Context, FableOverlayView?>()
     /// 卡片显示
     public let didShowCard = Delegate<Context, Void>()
+    /// 当卡片滑动时透传上下文
+    public let slipThroughContext = Delegate<(Context, SwipeResultDirection), Any?>()
     /// 当卡片出去   (主动调用Swipe滑出/手势滑出)
     public let didSwipeCard = Delegate<(Context, SwipeResultDirection, context: Any?), Void>()
     /// 卡片被点
