@@ -218,8 +218,8 @@ extension PackCardView {
                         _ context: Any?,
                         completionHandler: @escaping () -> Void) {
         guard !dragBegin else { return }
+        isUserInteractionEnabled = false
         delegate?.card(self, wasSwipedIn: direction, context: context)
-        
         set(anchorPoint: CGPoint(x: 0.5, y: dot.y / bounds.height))
         fractionComplete = 0.5
         
