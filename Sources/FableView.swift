@@ -208,10 +208,6 @@ extension FableView {
             _recycles.append(temp)
         }
         
-        if flattenedProvider.numberOfWaitings - 1 <= 0 {
-            flattenedProvider.didRunOutOfDatas()
-        }
-        
         if flattenedProvider.numberOfWaitings != 0 {
             loadNewCard()
         } else {
@@ -231,6 +227,10 @@ extension FableView {
             self.flattenedProvider.didSwipeCard(current, direction, context)
             self.flattenedProvider.didRunOutOfVisibles()
             self.setNeedsLayout()
+        }
+        
+        if flattenedProvider.numberOfWaitings <= 0 {
+            flattenedProvider.didRunOutOfDatas()
         }
     }
     
