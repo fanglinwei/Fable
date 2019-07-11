@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Real Loading Controller-->
+        <scene sceneID="bb2-AT-7Oz">
+            <objects>
+                <viewController storyboardIdentifier="RealLoadingController" automaticallyAdjustsScrollViewInsets="NO" id="vge-na-Kef" customClass="RealLoadingController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="k78-m9-UAy">
+                        <rect key="frame" x="0.0" y="0.0" width="365" height="688"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_card_loading_bg" translatesAutoresizingMaskIntoConstraints="NO" id="TO6-79-9GT">
+                                <rect key="frame" x="0.0" y="0.0" width="365" height="688"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dPB-5c-9El">
+                                <rect key="frame" x="23.5" y="168" width="318" height="352"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZIq-ll-jh6">
+                                        <rect key="frame" x="0.0" y="0.0" width="318" height="318"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RoZ-qb-wk2" customClass="AnimationView" customModule="Lottie">
+                                                <rect key="frame" x="0.0" y="0.0" width="318" height="318"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="animationName" value="ripple"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mAS-E8-i8W" customClass="AvatarView" customModule="Example" customModuleProvider="target">
+                                                <rect key="frame" x="114" y="114" width="90" height="90"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="mAS-E8-i8W" secondAttribute="height" id="0nE-dW-V9D"/>
+                                                    <constraint firstAttribute="width" constant="90" id="qXS-xP-TqT">
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autoConstant" value="YES"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </constraint>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="autoCornerRadius">
+                                                        <real key="value" value="45"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="ZIq-ll-jh6" secondAttribute="height" id="0YE-dr-vzI"/>
+                                            <constraint firstItem="RoZ-qb-wk2" firstAttribute="leading" secondItem="ZIq-ll-jh6" secondAttribute="leading" id="8xN-b9-qYf"/>
+                                            <constraint firstItem="mAS-E8-i8W" firstAttribute="centerY" secondItem="ZIq-ll-jh6" secondAttribute="centerY" id="BH1-48-rDI"/>
+                                            <constraint firstAttribute="width" constant="318" id="D5d-r9-fsE">
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autoConstant" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </constraint>
+                                            <constraint firstItem="RoZ-qb-wk2" firstAttribute="top" secondItem="ZIq-ll-jh6" secondAttribute="top" id="SzZ-8k-4Zt"/>
+                                            <constraint firstAttribute="trailing" secondItem="RoZ-qb-wk2" secondAttribute="trailing" id="VSN-1o-dFW"/>
+                                            <constraint firstItem="mAS-E8-i8W" firstAttribute="centerX" secondItem="ZIq-ll-jh6" secondAttribute="centerX" id="nFT-VI-d2y"/>
+                                            <constraint firstAttribute="bottom" secondItem="RoZ-qb-wk2" secondAttribute="bottom" id="vvi-uM-KTL"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正在寻找合适的Ta..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="igl-oa-eY1">
+                                        <rect key="frame" x="0.0" y="338" width="318" height="14"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="14" id="vPW-MM-1Td">
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autoConstant" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </constraint>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                        <color key="textColor" red="0.1843137255" green="0.34509803919999998" blue="0.77647058820000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autoFont" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="igl-oa-eY1" firstAttribute="top" secondItem="ZIq-ll-jh6" secondAttribute="bottom" constant="20" id="4Uc-s4-vCu">
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autoConstant" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </constraint>
+                                    <constraint firstAttribute="trailing" secondItem="ZIq-ll-jh6" secondAttribute="trailing" id="7Qd-d2-ve7"/>
+                                    <constraint firstItem="ZIq-ll-jh6" firstAttribute="top" secondItem="dPB-5c-9El" secondAttribute="top" id="7bz-Qd-vOt"/>
+                                    <constraint firstItem="ZIq-ll-jh6" firstAttribute="leading" secondItem="dPB-5c-9El" secondAttribute="leading" id="KvL-6Z-43Y"/>
+                                    <constraint firstItem="igl-oa-eY1" firstAttribute="leading" secondItem="dPB-5c-9El" secondAttribute="leading" id="ank-S4-g5d"/>
+                                    <constraint firstAttribute="bottom" secondItem="igl-oa-eY1" secondAttribute="bottom" id="bdE-y1-w8f"/>
+                                    <constraint firstAttribute="trailing" secondItem="igl-oa-eY1" secondAttribute="trailing" id="gQz-Nt-Izc"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="TO6-79-9GT" firstAttribute="top" secondItem="k78-m9-UAy" secondAttribute="top" id="8OF-gS-1SN"/>
+                            <constraint firstItem="dPB-5c-9El" firstAttribute="centerY" secondItem="k78-m9-UAy" secondAttribute="centerY" id="DbM-jh-fhT"/>
+                            <constraint firstItem="TO6-79-9GT" firstAttribute="leading" secondItem="Npl-Eu-TUg" secondAttribute="leading" id="VOm-qw-Qzb"/>
+                            <constraint firstItem="dPB-5c-9El" firstAttribute="centerX" secondItem="k78-m9-UAy" secondAttribute="centerX" id="YvS-Tv-1mW"/>
+                            <constraint firstAttribute="bottom" secondItem="TO6-79-9GT" secondAttribute="bottom" id="rOp-tX-rRz"/>
+                            <constraint firstItem="Npl-Eu-TUg" firstAttribute="trailing" secondItem="TO6-79-9GT" secondAttribute="trailing" id="xCv-gU-U4X"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Npl-Eu-TUg"/>
+                    </view>
+                    <size key="freeformSize" width="365" height="688"/>
+                    <connections>
+                        <outlet property="animationiew" destination="RoZ-qb-wk2" id="uVh-ez-hFj"/>
+                        <outlet property="avatarImageView" destination="mAS-E8-i8W" id="idA-sD-r9u"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hFA-Vu-V73" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1851" y="46"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="home_card_loading_bg" width="345" height="688"/>
+    </resources>
+</document>

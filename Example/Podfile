@@ -5,5 +5,12 @@ target 'Example' do
   use_frameworks!
   
   pod 'Fable', :path => "../"
-  
+  pod 'AutoInch'
+  pod 'Texture/Core'
+  pod 'lottie-ios'
+  pod 'Kingfisher'
+  pod 'SnapKit'
+  pod 'Then'
+  pod 'SwiftMessages'
+  pod 'SwifterSwift'
 end
