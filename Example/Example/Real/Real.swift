@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Real这个demo建议采用AsyncDisplayKit做性能优化, 以保证高流畅度滑动.不太建议使用Autolayout布局卡片里的内容.
 enum Real {
     
     // 感觉

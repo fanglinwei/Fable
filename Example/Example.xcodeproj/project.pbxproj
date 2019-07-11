@@ -144,7 +144,7 @@
 			children = (
 				284F799322D7435D001EF2B8 /* AnimationData */,
 				284F793C22D71A3F001EF2B8 /* Basic */,
-				284F793B22D6EDE7001EF2B8 /* AsyncDisplayKit */,
+				284F793B22D6EDE7001EF2B8 /* Real */,
 				2813C84722B0AA0500CE50E6 /* AppDelegate.swift */,
 				284F793922D6ED4E001EF2B8 /* TableViewController.swift */,
 				2813C84B22B0AA0500CE50E6 /* Main.storyboard */,
@@ -155,7 +155,7 @@
 			path = Example;
 			sourceTree = "<group>";
 		};
-		284F793B22D6EDE7001EF2B8 /* AsyncDisplayKit */ = {
+		284F793B22D6EDE7001EF2B8 /* Real */ = {
 			isa = PBXGroup;
 			children = (
 				284F798022D7272A001EF2B8 /* Real.swift */,
@@ -164,7 +164,7 @@
 				284F795922D724A0001EF2B8 /* Controller */,
 				284F795822D7247B001EF2B8 /* Storyboard */,
 			);
-			path = AsyncDisplayKit;
+			path = Real;
 			sourceTree = "<group>";
 		};
 		284F793C22D71A3F001EF2B8 /* Basic */ = {
