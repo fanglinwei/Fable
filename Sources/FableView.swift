@@ -25,8 +25,6 @@ public final class FableView: UIView {
         }
     }
     
-    public var targetAngle: CGFloat = 0.69
-    public var radius: CGFloat?
     /// 拖动时背景是否能做移动动画
     public var shouldMoveBackgroundCard = true
     public var backgroundScale: CGFloat = 0.9
@@ -161,10 +159,7 @@ extension FableView {
             layoutCard(view, at: i)
             view.delegate = self
             view.configure(cell, overlayView: nil)
-            view.targetAngle = targetAngle
-            if let radius = radius {
-                view.radius = radius
-            }
+            view.animator = flattenedProvider.animator()
             view.isUserInteractionEnabled = i == 0
             insertSubview(view, aboveSubview: backgroundView)
         }
@@ -190,12 +185,9 @@ extension FableView {
         let i = visibles.count - 1
         view.delegate = self
         view.configure(contentView, overlayView: nil)
-        view.targetAngle = targetAngle
+        view.animator = flattenedProvider.animator()
         view.isUserInteractionEnabled = false
         layoutCard(view, at: i)
-        if let radius = radius {
-            view.radius = radius
-        }
         
         insertSubview(view, aboveSubview: backgroundView)
     }

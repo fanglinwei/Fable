@@ -10,9 +10,10 @@ public class BasicProvider<Data, View: FableCardable>: ItemProvider {
     
     typealias Context = ActionSource<Data>.Context
     
-    public var dataSource: ArrayDataSource<Data>
-    public var viewSource: ViewSource<Data, View>
-    public var actionSource: ActionSource<Data>
+    public let dataSource: ArrayDataSource<Data>
+    public let viewSource: ViewSource<Data, View>
+    public let actionSource: ActionSource<Data>
+    public let animatorSource: AnimatorSource
     public var visibleSize: Int { return dataSource.visibleSize }
     public var recycleSize: Int { return dataSource.recycleSize }
     
@@ -20,10 +21,12 @@ public class BasicProvider<Data, View: FableCardable>: ItemProvider {
     
     public init(dataSource: ArrayDataSource<Data>,
                 viewSource: ViewSource<Data, View>,
-                actionSource: ActionSource<Data>) {
+                actionSource: ActionSource<Data>,
+                animatorSource: AnimatorSource = .angleAnimator) {
         self.dataSource = dataSource
         self.viewSource = viewSource
         self.actionSource = actionSource
+        self.animatorSource = animatorSource
         self.dataSource.needsLoadFill.delegate(on: self) { (self, data) in
             let views = data.map { self.viewSource.view(data: $0)}
             self.needsLoadFill.call(views)
@@ -36,6 +39,10 @@ public class BasicProvider<Data, View: FableCardable>: ItemProvider {
     
     public var isVisibleFull: Bool {
         return dataSource.isVisibleFull
+    }
+    
+    public func animator() -> Animator {
+        return animatorSource.animatorGeneratorFn()
     }
     
     func takeVisible() -> FableCard? {

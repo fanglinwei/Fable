@@ -18,6 +18,7 @@ class EmptyProvider: ItemProvider {
     
     var needsLoadFill: Delegate<[FableCard], Void> = .init()
     
+    func animator() -> Animator { return Animator() }
     func swipeThresholdRatioMargin(_ card: FableCard?) -> CGFloat { return 0.5}
     func viewForCardOverlay(_ card: FableCard?) -> FableOverlayView? { return nil}
     func didShowCard(_ card: FableCard?) {}

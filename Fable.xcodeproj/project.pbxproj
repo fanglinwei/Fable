@@ -23,6 +23,9 @@
 		2813C87C22B1F91300CE50E6 /* ActionSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2813C87B22B1F91300CE50E6 /* ActionSource.swift */; };
 		2813C88422B27CA600CE50E6 /* BasicProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2813C88322B27CA600CE50E6 /* BasicProvider.swift */; };
 		2813C88622B27CDE00CE50E6 /* EmptyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2813C88522B27CDE00CE50E6 /* EmptyProvider.swift */; };
+		283C0F9522D83DF30015B9AA /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283C0F9422D83DF30015B9AA /* Animator.swift */; };
+		283C0F9722D83E2F0015B9AA /* AngleAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283C0F9622D83E2F0015B9AA /* AngleAnimator.swift */; };
+		283C0F9922D88B030015B9AA /* AnimatorSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283C0F9822D88B030015B9AA /* AnimatorSource.swift */; };
 		283F1CE722A954EA003F45C1 /* Fable.h in Headers */ = {isa = PBXBuildFile; fileRef = 283F1CE522A954EA003F45C1 /* Fable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -43,6 +46,9 @@
 		2813C87B22B1F91300CE50E6 /* ActionSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSource.swift; sourceTree = "<group>"; };
 		2813C88322B27CA600CE50E6 /* BasicProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicProvider.swift; sourceTree = "<group>"; };
 		2813C88522B27CDE00CE50E6 /* EmptyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyProvider.swift; sourceTree = "<group>"; };
+		283C0F9422D83DF30015B9AA /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
+		283C0F9622D83E2F0015B9AA /* AngleAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleAnimator.swift; sourceTree = "<group>"; };
+		283C0F9822D88B030015B9AA /* AnimatorSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorSource.swift; sourceTree = "<group>"; };
 		283F1CE222A954EA003F45C1 /* Fable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Fable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		283F1CE522A954EA003F45C1 /* Fable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Fable.h; sourceTree = "<group>"; };
 		283F1CE622A954EA003F45C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -74,6 +80,7 @@
 				2813C87122B0DF6900CE50E6 /* ViewSource.swift */,
 				2813C86D22B0D05A00CE50E6 /* ArrayDataSource.swift */,
 				2813C87B22B1F91300CE50E6 /* ActionSource.swift */,
+				283C0F9822D88B030015B9AA /* AnimatorSource.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -123,6 +130,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		283C0F9322D83DEA0015B9AA /* Animator */ = {
+			isa = PBXGroup;
+			children = (
+				283C0F9422D83DF30015B9AA /* Animator.swift */,
+				283C0F9622D83E2F0015B9AA /* AngleAnimator.swift */,
+			);
+			path = Animator;
+			sourceTree = "<group>";
+		};
 		283F1CD822A954EA003F45C1 = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +162,7 @@
 				2813C88722B27D1400CE50E6 /* View */,
 				2813C87D22B27BC100CE50E6 /* Protocol */,
 				2813C87F22B27BF000CE50E6 /* Provider */,
+				283C0F9322D83DEA0015B9AA /* Animator */,
 				2813C87E22B27BDC00CE50E6 /* Source */,
 				2813C88022B27C0200CE50E6 /* Other */,
 				2813C88222B27C6E00CE50E6 /* Utils */,
@@ -235,10 +252,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				283C0F9922D88B030015B9AA /* AnimatorSource.swift in Sources */,
 				2813C86122B0AEEE00CE50E6 /* AnimationSemaphore.swift in Sources */,
 				2813C87422B0E15A00CE50E6 /* Provider.swift in Sources */,
 				2813C86522B0AEEE00CE50E6 /* FableCardable.swift in Sources */,
 				2813C86A22B0AF1200CE50E6 /* Speed.swift in Sources */,
+				283C0F9722D83E2F0015B9AA /* AngleAnimator.swift in Sources */,
 				2813C86422B0AEEE00CE50E6 /* Animator+Extension.swift in Sources */,
 				2813C86E22B0D05A00CE50E6 /* ArrayDataSource.swift in Sources */,
 				2813C87022B0DACE00CE50E6 /* PondArray.swift in Sources */,
@@ -248,6 +267,7 @@
 				2813C88422B27CA600CE50E6 /* BasicProvider.swift in Sources */,
 				2813C86C22B0B30C00CE50E6 /* Delegate.swift in Sources */,
 				2813C86822B0AEEE00CE50E6 /* SwipeResultDirection.swift in Sources */,
+				283C0F9522D83DF30015B9AA /* Animator.swift in Sources */,
 				2813C87C22B1F91300CE50E6 /* ActionSource.swift in Sources */,
 				2813C86622B0AEEE00CE50E6 /* PackCardView.swift in Sources */,
 				2813C86222B0AEEE00CE50E6 /* FableOverlayView.swift in Sources */,

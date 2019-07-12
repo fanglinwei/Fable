@@ -89,10 +89,7 @@ extension RealViewController {
     
     private func setupFableView() {
         
-        fableView.radius = fableView.height * 3
         fableView.backgroundScale = 0.95
-        fableView.targetAngle = .pi / 6
-        
         let ratioMargin: CGFloat = 0.45
         
         // 视图层
@@ -198,9 +195,18 @@ extension RealViewController {
             self.model.loadData()
         }
         
+        let radius = fableView.height * 3
+        let animatorSource = AnimatorSource { () -> AngleAnimator in
+            let animator = AngleAnimator()
+            animator.radius = radius
+            animator.targetAngle = .pi / 6
+            return animator
+        }
+        
         let provider = BasicProvider(dataSource: model.dataSource,
                                      viewSource: viewSource,
-                                     actionSource: actionSource)
+                                     actionSource: actionSource,
+                                     animatorSource: animatorSource)
         
         fableView.provider = provider
     }

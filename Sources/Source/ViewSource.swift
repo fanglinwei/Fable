@@ -19,4 +19,3 @@ public class ViewSource<Data, View: FableCardable> {
         return viewGenerator(data)
     }
 }
-

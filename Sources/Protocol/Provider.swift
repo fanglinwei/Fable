@@ -13,6 +13,7 @@ public protocol Provider {
     var isVisibleFull: Bool { get }
     var visibleSize: Int { get }
     var recycleSize: Int { get }
+    func animator() -> Animator
     
     func willReload()
     func didReload()
