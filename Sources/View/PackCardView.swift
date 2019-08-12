@@ -129,7 +129,6 @@ extension PackCardView {
     
     private func configureAnimator() {
         animator.view = self
-        animator.panGestureRecognizer = panGestureRecognizer
     }
 }
 
@@ -153,10 +152,10 @@ extension PackCardView {
             // https://www.jianshu.com/p/2a01e5e2141f
             layer.rasterizationScale = UIScreen.main.scale
             layer.shouldRasterize = true
-            animator.began(gestureRecognizer)
+            animator.handle(gestureRecognizer)
             
         case .changed:
-            animator.changed(gestureRecognizer)
+            animator.handle(gestureRecognizer)
             
             let percentage = dragPercentage
             updateOverlayWithFinishPercent(percentage, direction: dragDirection)
@@ -166,6 +165,8 @@ extension PackCardView {
         case .ended, .cancelled:
             isUserInteractionEnabled = false
             delegate?.card(cardPanFinished: self)
+            
+            // 滑动
             swipeMadeAction()
             layer.shouldRasterize = false
             
@@ -221,7 +222,7 @@ extension PackCardView {
         delegate?.card(self, wasSwipedIn: direction, context: context)
         overlayView?.overlayState = direction
         overlayView?.alpha = 1.0
-        animator.swipeAction(direction) { [weak self] in
+        animator.swipeAction(panGestureRecognizer, direction) { [weak self] in
             guard let self = self else { return }
             self.dragBegin = false
             self.removeFromSuperview()
@@ -230,7 +231,9 @@ extension PackCardView {
     
     private func resetViewPositionAndTransformations() {
         delegate?.card(cardWillReset: self)
-        animator.resetViewPositionAndTransformations { [weak self] in
+        animator.resetViewPosition(animations: { [weak self] in
+            self?.overlayView?.alpha = 0
+        }) { [weak self] in
             guard let self = self else { return }
             self.delegate?.card(cardDidReset: self)
             self.dragBegin = false

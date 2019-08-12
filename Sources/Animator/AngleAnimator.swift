@@ -23,17 +23,6 @@ public class AngleAnimator: Animator {
         return (fractionComplete - 0.5 > 0) ? .right : .left
     }
     
-    private var completionAngle: CGFloat {
-        let a = bounds.width * 0.5 / (dot.y - bounds.height)
-        return atan(a)
-    }
-    
-    /// 滑动圆心
-    private var dot: CGPoint {
-        let r = (radius ?? bounds.height * 2) + bounds.height * 0.5
-        return CGPoint(x: bounds.width * 0.5, y: abs(r))
-    }
-    
     private var animator = UIViewPropertyAnimator()
     private var animationProgress: CGFloat = 0
     
@@ -53,32 +42,41 @@ public class AngleAnimator: Animator {
         }
     }
     
-    public override func began(_ gestureRecognizer: UIPanGestureRecognizer) {
-        setupAnchorPoint()
-        fractionComplete = 0.5
-        animationProgress = fractionComplete
+    public override init() {
+        super.init()
     }
     
-    public override func changed(_ gestureRecognizer: UIPanGestureRecognizer) {
-        /*
-         atan 反正切函数
-         旋转角度 = 反正切/(位移的距离/圆点到手势触摸的点)
-         */
-        let dragDistance = gestureRecognizer.translation(in: superview)
-        let location = gestureRecognizer.location(in: superview)
+    public override func handle(_ gestureRecognizer: UIPanGestureRecognizer) {
         
-        let a = dragDistance.x / (dot.y - location.y)
-        let rotationAngle =  atan(a)
-        let fraction = rotationAngle / (targetAngle * 2)
-        fractionComplete = fraction + animationProgress
+        switch gestureRecognizer.state {
+        case .began:
+            setupAnchorPoint()
+            fractionComplete = 0.5
+            animationProgress = fractionComplete
+        case .changed:
+            /*
+             atan 反正切函数
+             旋转角度 = 反正切/(位移的距离/圆点到手势触摸的点)
+             */
+            let dragDistance = gestureRecognizer.translation(in: superview)
+            let location = gestureRecognizer.location(in: superview)
+            
+            let a = dragDistance.x / (dot.y - location.y)
+            let rotationAngle =  atan(a)
+            let fraction = rotationAngle / (targetAngle * 2)
+            fractionComplete = fraction + animationProgress
+        default:
+            break
+        }
     }
     
-    public override func resetViewPositionAndTransformations(_ completion: @escaping () -> Void) {
+    public override func resetViewPosition(animations: (() -> Void)? = nil,
+                                           _ completion: @escaping () -> Void) {
         removeAnimations()
         animator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.7)
         animator.addAnimations {
             self.fractionComplete = 0.5
-//            self.overlayView?.alpha = 0
+            animations?()
         }
         animator.addCompletion { position in
            completion()
@@ -86,10 +84,10 @@ public class AngleAnimator: Animator {
         animator.startAnimation()
     }
     
-    public override func swipeAction(_ direction: SwipeResultDirection, _ completion: @escaping () -> Void) {
+    public override func swipeAction(_ recognizer: UIPanGestureRecognizer, _ direction: SwipeResultDirection, _ completion: @escaping () -> Void) {
         
-        let location = panGestureRecognizer.location(in: superview)
-        let velocity = panGestureRecognizer.velocity(in: superview)
+        let location = recognizer.location(in: superview)
+        let velocity = recognizer.velocity(in: superview)
         
         let radius = dot.y - location.y
         let fraction = 0.5 - abs(0.5 - fractionComplete)
@@ -145,4 +143,26 @@ public class AngleAnimator: Animator {
     }
     
     deinit { print("deinit:\t AngleAnimator") }
+}
+
+
+extension AngleAnimator {
+    
+    private var bounds: CGRect { return view?.bounds ?? .zero }
+    private var superview: UIView? { return view?.superview }
+    private var transform: CGAffineTransform {
+        get { return view?.transform ?? .identity }
+        set{ view?.transform = newValue }
+    }
+    
+    /// 滑动圆心
+    private var dot: CGPoint {
+        let r = (radius ?? bounds.height * 2) + bounds.height * 0.5
+        return CGPoint(x: bounds.width * 0.5, y: abs(r))
+    }
+    
+    private var completionAngle: CGFloat {
+        let a = bounds.width * 0.5 / (dot.y - bounds.height)
+        return atan(a)
+    }
 }
